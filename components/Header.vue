@@ -3,9 +3,9 @@
       <div class="relative flex justify-between w-full">
         <h1 class="text-2xl font-semibold">DAILY SCHEDULER</h1>
         <div class="flex w-64 justify-between">
-          <button href="/login">ログイン</button>
-          <button href="/register">新規登録</button>
-          <button @click="signOut">ログアウト</button>
+          <nuxt-link to="/login">ログイン</nuxt-link>
+          <nuxt-link to="/register">新規登録</nuxt-link>
+          <a @click="signOut">ログアウト</a>
         </div>
       </div>
     </header>

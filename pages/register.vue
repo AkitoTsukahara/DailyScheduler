@@ -171,16 +171,11 @@
 </template>
 
 <script>
-//import SocialLogin from '~/components/SocialLogin.vue'
 import firebase from '@/plugins/firebase'
 import zxcvbn from 'zxcvbn'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
-    //layout: 'signin',
-    // components: {
-    //     SocialLogin
-    // },
     data: function() {
         return {
             registerErrorMsg: '',
