@@ -1,14 +1,20 @@
 <template>
-  <main class="container relative min-h-screen pt-16 mx-auto">
-    <header>
-      <h1>DAILY SCHEDULER</h1>
-    </header>
+  <main class="container relative min-h-screen mx-auto">
+    <Header />
     <Nuxt />
-    <footer>
+    <footer class="leading-10 text-center text-xl font-black m-6">
       <span>© {{ new Date().getFullYear() }}</span>
     </footer>
   </main>  
 </template>
+<script>
+import Header from '@/components/Header.vue'
+export default {
+  components: {
+    Header
+  }
+}
+</script>
 <style>
 html {
   font-family:
