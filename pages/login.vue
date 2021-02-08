@@ -3,7 +3,7 @@
         <div class="bg-gray-100 flex-auto p-10 w-full">
             <div class="flex justify-center">
                 <div class="w-2/5 border bg-white">
-                    <div class="my-12 text-center">
+                    <!-- <div class="my-12 text-center">
                         <p class="text-xl font-bold">メールアドレスでログイン</p>
                         <p class="my-4">
                             <span class="font-semibold">メールアドレス</span>と<span class="font-semibold">パスワード</span>を入力してください。
@@ -43,14 +43,15 @@
 
                     </div>
 
-                    <hr class="border-b-2">
+                    <hr class="border-b-2"> -->
                     <div class="my-12 text-center">
                         <p class="text-xl font-bold mb-2">Googleアカウントでログイン</p>
 
-                        <form>
+                        <div>
                             <button
                                 type="submit"
-                                class="text-xl w-3/5 text-white h-12 py-2 rounded flex justify-center mx-auto border-blue-500 text-blue-500 border-2"
+                                class="block text-xl w-3/5 text-white h-12 py-2 rounded flex justify-center mx-auto border-blue-500 text-blue-500 border-2 bg-white"
+                                v-on:click="googleLogin"
                                 >
                                 <span class="w-6 pt-1">
                                     <svg enable-background="new 0 0 46 46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +68,7 @@
                                 </span>
                                 <span class="text-xl leading-9 ml-4">ログイン</span>
                             </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,6 +76,8 @@
     </section>
 </template>
 <script>
+import firebase from '@/plugins/firebase'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
     //layout: 'signin',
     data: function() {
@@ -88,30 +91,33 @@ export default {
             socialLoginErrorMsg: ''
         }
     },
+    progress() {
+            return this.score.value
+    },
     methods: {
-        email_login: function(err) {
-            this.$store
-                .dispatch('signInWithEmail', {
-                    email: this.login_email,
-                    password: this.login_password
-                })
-                .then(() => {
-                    this.login_email = ''
-                    this.login_password = ''
-                    this.$router.push({
-                        name: 'index'
-                    })
-                })
-                .catch((err) => {
-                    if (err.code === 'auth/user-disabled') {
-                        this.loginErrorMsg =
-                            'このアカウントはロックされています。'
-                    } else {
-                        this.loginErrorMsg =
-                            'メールアドレスまたはパスワードが間違っています。'
-                    }
-                })
-        },
+        // email_login: function(err) {
+        //     this.$store
+        //         .dispatch('signInWithEmail', {
+        //             email: this.login_email,
+        //             password: this.login_password
+        //         })
+        //         .then(() => {
+        //             this.login_email = ''
+        //             this.login_password = ''
+        //             this.$router.push({
+        //                 name: 'index'
+        //             })
+        //         })
+        //         .catch((err) => {
+        //             if (err.code === 'auth/user-disabled') {
+        //                 this.loginErrorMsg =
+        //                     'このアカウントはロックされています。'
+        //             } else {
+        //                 this.loginErrorMsg =
+        //                     'メールアドレスまたはパスワードが間違っています。'
+        //             }
+        //         })
+        // },
         googleLogin: function(err) {
             this.$store
                 .dispatch('signInWithGoogle')
