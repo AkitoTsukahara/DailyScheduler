@@ -3,15 +3,16 @@
     <v-row wrap justify="center" align="center">
       <v-col :sm="12" :md="8">
         <p class="text-center">ログインユーザのみ閲覧可能なコンテンツ</p>
+        <p class="text-center">サンプルページ</p>
         <div class="pa-5">
           <v-btn
             block
             color="indigo darken-1"
             nuxt
-            to="/sample"
+            to="/"
             class="white--text"
           >
-            サンプルページへ
+            トップページへ
           </v-btn>
         </div>
         <div class="pa-5">
@@ -28,9 +29,9 @@
     </v-row>
   </v-container>
 </template>
+
 <script>
 export default {
-  name: 'TOP',
   methods: {
     signOut: function(err) {
       this.$store

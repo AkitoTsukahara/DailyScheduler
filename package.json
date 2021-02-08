@@ -12,11 +12,18 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.1",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "firebase": "^8.2.6",
+    "node-sass": "^5.0.0",
+    "nuxt": "^2.14.12",
+    "sass-loader": "^11.0.0",
+    "save": "^2.4.0",
+    "vuex-persistedstate": "^4.0.0-beta.3",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
     "@nuxt/typescript-build": "^2.0.4",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/tailwindcss": "^3.4.2",
     "@vue/test-utils": "^1.1.2",
     "babel-core": "7.0.0-bridge.0",

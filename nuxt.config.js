@@ -1,9 +1,19 @@
+require('dotenv').config()
+const {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_DATABASE_URL,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSSAGE_SENDER_ID,
+  FIREBASE_APP_ID,
+} = process.env
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'DailyScheduler',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
@@ -21,7 +31,17 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/firebase.ts',
+    '~/plugins/firebase.auth.ts',
+    {
+      src: '~/plugins/persistedstate.ts',
+      ssr: false
+    },
   ],
+
+  router: {
+    middleware: 'authenticated'
+  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -40,5 +60,14 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  env: {
+    FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL,
+    FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSSAGE_SENDER_ID,
+    FIREBASE_APP_ID,
   }
 }

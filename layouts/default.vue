@@ -1,9 +1,14 @@
 <template>
-  <div>
+  <main class="container relative min-h-screen pt-16 mx-auto">
+    <header>
+      <h1>DAILY SCHEDULER</h1>
+    </header>
     <Nuxt />
-  </div>
+    <footer>
+      <span>© {{ new Date().getFullYear() }}</span>
+    </footer>
+  </main>  
 </template>
-
 <style>
 html {
   font-family:
