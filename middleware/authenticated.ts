@@ -1,9 +1,12 @@
-export default ({ store, route, redirect }: {store: any, route: any, redirect: any}) => {
+import { Middleware, Context } from '@nuxt/types'
 
-    if (!store.getters.isAuthenticated && route.name !== 'login' && route.name !== 'register') {
-        redirect('/login')
-    }
-    if (store.getters.isAuthenticated && (route.name === 'login' || route.name === 'register')) {
-        redirect('/')
-    }
+const authenticated: Middleware = ({
+  redirect,
+  app: { $accessor },
+}: Context) => {
+    console.log($accessor)
+  if (!$accessor.login.hasUserInfo) {
+    return redirect('/login')
+  }
 }
+export default authenticated

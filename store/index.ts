@@ -1,48 +1,13 @@
-import { auth } from '~/plugins/firebase.ts'
+import { getAccessorType } from 'typed-vuex'
 
-export const strict = false
+import * as login from './login'
 
-export const state = () => ({
-    user: null,
+export type RootState = ReturnType<
+  typeof login.state
+>
+
+export const accessorType = getAccessorType({
+  modules: {
+    login
+  },
 })
-
-export const mutations = {
-    setUser(state: { user: any } , payload: any ) {
-        state.user = payload
-    }
-}
-
-export const actions = {
-    signUp({ commit }: {commit: any}, { email , password  }: {email:string, password: string}) {
-        return auth().createUserWithEmailAndPassword(email , password )
-    },
-
-    signInWithEmail({ commit }: {commit: any}, { email, password }: {email:string, password: string}) {
-        return auth().signInWithEmailAndPassword(email, password)
-    },
-
-    // signInWithTwitter({ commit }: {commit: any}){
-    //     return auth().signInWithPopup(new auth.TwitterAuthProvider())
-    // },
-
-    // signInWithFacebook({ commit }: {commit: any}){
-    //     return auth().signInWithPopup(new auth.FacebookAuthProvider())
-    // },
-
-    signInWithGoogle({ commit }: {commit: any}){
-        return auth().signInWithPopup(new auth.GoogleAuthProvider())
-    },
-
-    signOut() {
-        return auth().signOut()
-    }
-}
-
-export const getters = {
-    user(state: any){
-        return state.user
-    },
-    isAuthenticated (state: any) {
-        return !!state.user
-    }
-}

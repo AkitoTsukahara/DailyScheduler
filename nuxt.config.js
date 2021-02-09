@@ -9,6 +9,8 @@ const {
   FIREBASE_APP_ID,
 } = process.env
 export default {
+  mode: 'universal',
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'DailyScheduler',
@@ -24,6 +26,12 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  vue: {
+    config: {
+      productionTip: true,
+      devtools: true
+    }
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -32,16 +40,11 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/firebase.ts',
-    '~/plugins/firebase.auth.ts',
     {
-      src: '~/plugins/persistedstate.ts',
+      src: '~/plugins/vue-full-calendar.ts',
       ssr: false
-    },
+    }
   ],
-
-  router: {
-    middleware: 'authenticated'
-  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -52,14 +55,19 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    'nuxt-typed-vuex',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
+
+  axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: [/typed-vuex/],
   },
   env: {
     FIREBASE_API_KEY,

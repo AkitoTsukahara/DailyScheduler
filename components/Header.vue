@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-semibold">DAILY SCHEDULER</h1>
         <div class="flex w-64 justify-between">
           <nuxt-link to="/login">ログイン</nuxt-link>
-          <nuxt-link to="/register">新規登録</nuxt-link>
+          <!-- <nuxt-link to="/register">新規登録</nuxt-link> -->
           <a @click="signOut">ログアウト</a>
         </div>
       </div>
