@@ -7,7 +7,7 @@
             <div
             v-for="(category,index) in displayCategories" 
             :key="index"
-            style="min-width:400px"
+            style="min-width:300px"
             >
                 <div class="bg-gray-200 m-2 p-2 text-sm"
                     @dragstart.self="dragCategory(category)"
@@ -27,6 +27,36 @@
                     </div>
                 </div>
             </div>
+            <div style="min-width:300px">
+                <div class="bg-gray-200 m-2 p-2 text-sm">
+                    <div 
+                        v-if="!show_category_input" 
+                        @click="show_category_input=true"
+                    >
+                        カテゴリーを追加
+                    </div>
+                    <div v-else>
+                        <input 
+                            type="text" 
+                            class="w-full p-2" 
+                            placeholder="新しいカテゴリー名を追加してください"
+                            v-model="category_name"
+                        />
+                        <div class="flex m-2">
+                            <button class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-lg mr-2 font-bold"
+                                @click="categoryAdd"
+                            >
+                                追加
+                            </button>
+                            <button class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-lg font-bold"
+                                @click="closeCategoryInput"
+                            >
+                                キャンセル
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +67,8 @@ export default {
             task:'',
             category:'',
             type:'',
+            show_category_input: false,
+            category_name:'',
             categories: [
             {
                 id: 1,
@@ -146,7 +178,20 @@ export default {
                     if (tasks.length === 0) this.task.category_id = overCategory.id;
                 }
             }
-        }
+        },
+        categoryAdd() {
+            if (this.category_name != '') {
+                this.categories.push({
+                id: Date.now(),
+                name: this.category_name
+                }),
+                this.show_category_input = false;
+            }
+        },
+        closeCategoryInput() {
+            this.category_name = '';
+            this.show_category_input = false;
+        },
     },
     computed: {
             displayCategories() {
