@@ -1,0 +1,167 @@
+<template>
+    <div>
+        <div id="trello-header" class="h-12 p-2">
+            <h1 class="text-sm font-bold">TASK LIST</h1>
+        </div>
+        <div id="trello-content" class="flex">
+            <div
+            v-for="(category,index) in displayCategories" 
+            :key="index"
+            style="min-width:400px"
+            >
+                <div class="bg-gray-200 m-2 p-2 text-sm"
+                    @dragstart.self="dragCategory(category)"
+                    @dragover.prevent="dragOverCategory(category)"
+                    draggable=true
+                >
+                    <div class="font-bold">{{ category.name }}</div>
+                    <div 
+                        v-for="(task,index) in category.tasks" 
+                        :key="index" 
+                        class="m-2 bg-white p-2"
+                        @dragstart="dragTask(task)"
+                        @dragover.prevent="dragOverTask(task)"
+                        draggable=true
+                    >
+                        {{ task.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            task:'',
+            category:'',
+            type:'',
+            categories: [
+            {
+                id: 1,
+                name: 'テストA',
+                collapsed: false,
+            }, 
+            {
+                id: 2,
+                name: 'テストB',
+                collapsed: false,
+            },
+                {
+                id: 3,
+                name: 'テストC',
+                collapsed: false,
+            },             
+            ],
+            tasks: [
+            {
+                id: 1,
+                category_id: 1,
+                name: 'テスト1',
+                start_date: '2020-12-18',
+                end_date: '2020-12-20',
+                incharge_user: '鈴木',
+                percentage: 100,
+            },
+            {
+                id: 2,
+                category_id: 1,
+                name: 'テスト2',
+                start_date: '2020-12-19',
+                end_date: '2020-12-23',
+                incharge_user: '佐藤',
+                percentage: 90,
+            },
+            {
+                id: 3,
+                category_id: 3,
+                name: 'テスト3',
+                start_date: '2020-12-19',
+                end_date: '2020-12-21',
+                incharge_user: '鈴木',
+                percentage: 40,
+            },
+            {
+                id: 4,
+                category_id: 2,
+                name: 'テスト4',
+                start_date: '2020-12-21',
+                end_date: '2020-12-30',
+                incharge_user: '山下',
+                percentage: 60,
+            },
+            {
+                id: 5,
+                category_id: 2,
+                name: 'テスト5',
+                start_date: '2020-12-20',
+                end_date: '2020-12-22',
+                incharge_user: '佐藤',
+                percentage: 5,
+            },
+            {
+                id: 6,
+                category_id: 1,
+                name: 'テスト6',
+                start_date: '2020-12-28',
+                end_date: '2020-12-08',
+                incharge_user: '佐藤',
+                percentage: 0,
+            },
+            ],
+        }
+    },
+    methods: {
+        dragTask(task){
+            this.task = task;
+            this.type = "task";
+        },
+        dragCategory(category){
+            this.category = category;
+            this.type = "category";
+        },
+        dragOverTask(overTask){
+            if (overTask.id !== this.task.id && this.type === 'task') {
+                let deleteIndex;//削除を行うIndex保存
+                let addIndex;//追加を行うIndex保存
+                this.tasks.map((task, index) => { if (task.id === this.task.id) deleteIndex = index })
+                this.tasks.map((task, index) => { if (task.id === overTask.id) addIndex = index })
+                this.tasks.splice(deleteIndex, 1)
+                this.task.category_id = overTask.category_id
+                this.tasks.splice(addIndex, 0, this.task)
+            }
+        },
+        dragOverCategory(overCategory){
+            if (overCategory.id !== this.category.id && this.type === "category") {
+                let deleteIndex;
+                let addIndex;
+                this.categories.map((category, index) => { if (category.id === this.category.id) deleteIndex = index })
+                this.categories.map((category, index) => { if (category.id === overCategory.id) addIndex = index })
+                this.categories.splice(deleteIndex, 1)
+                this.categories.splice(addIndex, 0, this.category)
+            } else {
+                if (this.task.category_id !== overCategory.id && this.type === "task") {
+                    let tasks = this.tasks.filter(task => task.category_id === overCategory.id)
+                    if (tasks.length === 0) this.task.category_id = overCategory.id;
+                }
+            }
+        }
+    },
+    computed: {
+            displayCategories() {
+            let categories = [];
+            let tasks = ""
+            this.categories.map(category => {
+                tasks = this.tasks.filter(task => task.category_id === category.id);
+                categories.push({
+                    id: category.id,
+                    name: category.name,
+                    tasks
+                })
+            })
+            return categories;
+        },
+    }
+}
+</script>
