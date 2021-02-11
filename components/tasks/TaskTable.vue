@@ -26,9 +26,14 @@
                         @dragstart="dragTask(task)"
                         @dragover.prevent="dragOverTask(task)"
                         draggable=true
+                        @click="openModal(category,task)"
                     >
                         {{ task.name}}
                     </div>
+                    <TaskAdd
+                        @task-added="taskAdd"
+                        :category_id="category.id"
+                    ></TaskAdd>
                 </div>
             </div>
             <div style="min-width:300px">
@@ -62,13 +67,46 @@
                 </div>
             </div>
         </div>
+        <div id = "modal"></div>
+        <teleport to="#modal">
+            <div class="base" v-show="modal">
+                <div class="overlay" v-show="modal" @click="modal=false"></div>
+                <div class="content" v-show="modal">
+                    <div class="text font-bold">{{ form.name }}</div>
+                    <div class="text-xs">in カテゴリー{{ this.category.name }}</div>
+                    <div class="my-4">
+                        <label class="text-xs">
+                            担当者
+                        </label>
+                        <input class="border rounded-lg px-4 py-2 text-xs" v-model="form.incharge_user">
+                    </div>
+                    <div class="my-4">
+                        <label class="text-xs">
+                            開始日
+                        </label>
+                        <input class="border rounded-lg px-4 py-2 text-xs" v-model="form.start_date">
+                    </div>
+                    <div class="my-4">
+                        <label class="text-xs">
+                            終了締切日
+                        </label>
+                        <input class="border rounded-lg px-4 py-2 text-xs" v-model="form.end_date">
+                    </div>
+                    <button class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-lg mr-2 font-bold text-xs"
+                        @click="taskUpdate">更新
+                    </button>
+                </div>
+            </div>
+        </teleport>
     </div>
 </template>
 <script>
 import CategoryNameUpdate from '@/components/tasks/CategoryNameUpdate'
+import TaskAdd from '@/components/tasks/TaskAdd'
 export default {
     components: {
-        CategoryNameUpdate
+        CategoryNameUpdate,
+        TaskAdd
     },
     data() {
         return {
@@ -77,6 +115,16 @@ export default {
             type:'',
             show_category_input: false,
             category_name:'',
+            modal:false,
+            form:{
+                id:'',
+                category_id:'',
+                name:'',
+                start_date:'',
+                end_date:'',
+                incharge_user:'',
+                percentage:''
+            },
             categories: [
             {
                 id: 1,
@@ -172,6 +220,18 @@ export default {
                 this.tasks.splice(addIndex, 0, this.task)
             }
         },
+        taskAdd(task_name, category_id) {
+            this.tasks.push({
+                id: Date.now(),
+                category_id,
+                name: task_name
+            })
+        },
+        taskUpdate() {
+            let task = this.tasks.find(task => task.id === this.form.id)
+            Object.assign(task, this.form)
+            this.modal = false;
+        },
         dragOverCategory(overCategory){
             if (overCategory.id !== this.category.id && this.type === "category") {
                 let deleteIndex;
@@ -204,6 +264,11 @@ export default {
             let update_category = this.categories.find(cat => cat.id === category_id)
             update_category.name = category_name
         },
+        openModal(category, task) {
+            this.category = category;
+            Object.assign(this.form, task);
+            this.modal = true;
+        },
     },
     computed: {
             displayCategories() {
@@ -222,3 +287,31 @@ export default {
     }
 }
 </script>
+<style scoped>
+.base {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+    }
+  
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: gray;
+      opacity: 0.5;
+    }
+  
+    .content {
+      background-color: white;
+      position: relative;
+      border-radius: 10px;
+      padding: 40px;
+    }
+</style>

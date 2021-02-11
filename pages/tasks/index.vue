@@ -1,5 +1,7 @@
 <template>
-    <TaskTable />
+    <div>
+        <TaskTable />
+    </div>
 </template>
 <script>
 import TaskTable from '@/components/tasks/TaskTable'
