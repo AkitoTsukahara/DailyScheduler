@@ -14,7 +14,11 @@
                     @dragover.prevent="dragOverCategory(category)"
                     draggable=true
                 >
-                    <div class="font-bold">{{ category.name }}</div>
+                    <CategoryNameUpdate
+                        :category="category"
+                        @category-name-updated="categoryNameUpdate"
+                    >
+                    </CategoryNameUpdate>
                     <div 
                         v-for="(task,index) in category.tasks" 
                         :key="index" 
@@ -61,7 +65,11 @@
     </div>
 </template>
 <script>
+import CategoryNameUpdate from '@/components/tasks/CategoryNameUpdate'
 export default {
+    components: {
+        CategoryNameUpdate
+    },
     data() {
         return {
             task:'',
@@ -191,6 +199,10 @@ export default {
         closeCategoryInput() {
             this.category_name = '';
             this.show_category_input = false;
+        },
+        categoryNameUpdate(category_name, category_id) {
+            let update_category = this.categories.find(cat => cat.id === category_id)
+            update_category.name = category_name
         },
     },
     computed: {
