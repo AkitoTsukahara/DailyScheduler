@@ -1,6 +1,5 @@
 <template>
   <FullCalendar
-    :events="INITIAL_EVENTS"
     :options="calendarOptions"
   >
     <template v-slot:eventContent='arg'>
@@ -41,6 +40,15 @@ const INITIAL_EVENTS = [
 export default {
   components: {
     FullCalendar
+  },
+  created() {
+    this.events = this.$accessor.events.fetchEvent()
+    //console.log(events)
+    // if (events) {
+    //   this.events = events
+    // } else {
+    //   this.$router.push({name: 'address'})
+    // }
   },
   data () {
     return {
@@ -90,58 +98,13 @@ export default {
     }
   },
   watch: {
-    events:  function(newEvents) {
-      //const oldEvents = this.getEvents()
-      // 新しいイベントをカレンダーに追加する
-      //this.AddNewEvents(newEvents, oldEvents)
-      // 消えたイベントをカレンダーから除去する
-      //this.removeEvents(newEvents, oldEvents)
-    }
+    
   },
   mounted() {
     //this.calendarApi = this.$refs.fullCalendar.getApi()
     //this.getEvents()
     console.log(this.events)
     console.log(INITIAL_EVENTS)
-  },
-  methods: {
-    AddNewEvents: function(newEvents, oldEvents) {
-      const oldEventIds =  oldEvents.map(oldEvent => { return oldEvent.id})
-      newEvents.forEach((newEvent) => {
-        if(!oldEventIds.includes(newEvent.id)) this.calendarApi.addEvent(newEvent)
-      })
-    },
-    removeEvents: function(newEvents, oldEvents) {
-      const newEventIds = newEvents.map(newEvent => { return newEvent.id })
-      oldEvents.forEach((oldEvent) => {
-        if(!newEventIds.includes(oldEvent.id)) oldEvent.remove()
-      })
-    },
-    handleDateClick (arg) {
-      if (confirm('新しいスケジュールを' + arg.dateStr + 'に追加しますか ?')) {
-        this.calendarEvents.push({ // add new event data
-          title: '新規スケジュール',
-          start: arg.date,
-          allDay: arg.allDay
-        })
-      }
-    },
-    handleEventClick: function(eventInfo) {
-      this.$emit("eventClick", eventInfo)
-    },
-    handleEventChange: function(eventInfo) {
-      this.$emit("eventChange", eventInfo)
-    },
-    async getEvents() {
-      let snapshot = await this.$firestore.collection("Events").get()
-      let event = []
-      snapshot.forEach(doc => {
-        let appData = doc.data()
-        event.push(appData)
-      })
-      this.events = event
-    },
-
   },
 }
 </script>
